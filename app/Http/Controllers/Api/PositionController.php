@@ -16,4 +16,18 @@ class PositionController extends Controller
             'message' => 'the positions has returned successfully',
         ]);
     }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+            'department_id' => 'required|exists:departments,id',
+        ]);
+        $position = Position::create($request->all());
+        return response()->json([
+            'data' => $position,
+            'message' => 'the position has been created successfully',
+        ]);
+    }
 }

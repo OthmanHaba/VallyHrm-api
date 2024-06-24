@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\DepartmentResource;
 use App\Models\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -11,9 +12,9 @@ class DepartmentController extends Controller
 {
     public function index()
     {
-        $department = Department::all();
+        $department = Department::where('parent_id', 0)->get();
         return response()->json([
-            'data' => $department,
+            'data' => DepartmentResource::collection($department),
             'message' => 'the departments has returned successfully',
         ]);
     }
@@ -68,7 +69,7 @@ class DepartmentController extends Controller
         ]);
     }
 
-    public function deleteSubDepartments($parent_id)
+    protected function deleteSubDepartments($parent_id)
     {
         $departments = Department::where('parent_id', $parent_id)->get();
         foreach ($departments as $department) {
@@ -76,4 +77,5 @@ class DepartmentController extends Controller
             $department->delete();
         }
     }
+
 }

@@ -17,6 +17,13 @@ trait EnumValues
 
         return array_map(function ($value) use ($className) {
             return __("enums.$className.$value");
-        }, self::values());
+        }, self::getValues());
+    }
+
+    public static function getValueFromTranslatedValue($value): string
+    {
+        $className = Str::snake(class_basename(static::class));
+
+        return __("enums.$className.$value");
     }
 }

@@ -46,26 +46,28 @@ class EmployeeController extends Controller
             // personal
             'name' => $personal['name'],
             'file_number' => $personal['fileNumber'],
-            'financial_number' => $personal['financialNumber'],
+            'financial_number' => $personal['financeNumber'],
             'national_number' => $personal['nationalNumber'],
             'mother_name' => $personal['motherName'],
-            'social_status' => $personal['socialStatus'],
+//            'social_status' => $personal['socialStatus'],
+            'social_status' => 'single',
             'family_booklet_number' => $personal['familyNumber'],
             'family_number_count' => $personal['familyCount'],
             'registration_number' => $personal['registrationNumber'],
-            'gender' => $personal['gender'],
-            'birthday' => $personal['birthDate'],
+//            'gender' => $personal['gender'],
+            'gender' => 'male',
+            'birth_date' => $personal['birthDate'],
             'address' => $personal['address'],
             'notes' => $personal['notes'],
-            'personal_image' => $personal['personalPhoto'],
+//            'personal_image' => $personal['personalPhoto'],
             // job
             'position_id' => $job['currentJob'],
             'department_id' => $job['department'],
-            'position_start_date' => $job['startDate'],
-            'contract_type' => $job['contractType'],
+            'hiring_date' => $job['startDate'],
+//            'contract_type' => $job['contractType'],
             // financial
             'bank_id' => $financial['bank'],
-            'bank_branch_id' => $financial['branch'],
+            'bank_branch_id' => $financial['bankBranch'],
             'bank_account_number' => $financial['bankAccountNumber'],
             'hire_financial_grade' => $financial['financialGradeUponAppointment'],
             'current_financial_grade' => $financial['currentFinancialGrade'],
@@ -91,4 +93,5 @@ class EmployeeController extends Controller
             'data' => $employee,
             'message' => 'The employee has been created successfully',
         ]);
-    }}
+    }
+}

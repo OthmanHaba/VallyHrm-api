@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->string('financial_number')->unique();
             $table->string('national_number')->unique();
             $table->string('mother_name');
-            $table->enum('social_status', ['single', 'married', 'divorced', 'widow']);
+            $table->enum('social_status', \App\Enums\SocialStatus::getValues());
             $table->string('family_booklet_number');
             $table->integer('family_number_count');
             $table->string('registration_number')->unique();

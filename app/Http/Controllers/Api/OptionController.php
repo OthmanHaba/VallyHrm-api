@@ -23,4 +23,23 @@ class OptionController extends Controller
         ]);
 
     }
+
+    public function getOptions(Request $request)
+    {
+//        return $request->all();
+//        $request->validate([
+//            'table' => 'exists:options,id',
+//        ])
+        $options = DB::table($request->table)
+            ->select(
+                DB::raw('id as value'),
+                DB::raw('name as name'),
+            )->get();
+
+        return response()->json([
+            'message' => 'the options options have returned successfully',
+            'data' => $options,
+        ]);
+
+    }
 }

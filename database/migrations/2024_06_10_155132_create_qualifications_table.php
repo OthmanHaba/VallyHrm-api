@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('qualifications', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('major');
-            $table->date('take_date');
-            $table->string('place');
+            $table->string('title')->nullable();
+            $table->string('major')->nullable();
+            $table->date('take_date')->nullable();
+            $table->string('place')->nullable();
             $table->timestamps();
         });
     }

@@ -20,7 +20,6 @@ class BankBranchFactory extends Factory
         return [
             'name' => $this->faker->company,
             'bank_id' => Bank::factory()->create()->id,
-            'address' => $this->faker->address,
         ];
     }
 }

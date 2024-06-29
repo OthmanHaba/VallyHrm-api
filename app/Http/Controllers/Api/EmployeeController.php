@@ -3,16 +3,22 @@
 namespace App\Http\Controllers\Api;
 
 use App\Enums\AppointmentTypes;
+use App\Enums\GenderEnum;
+use App\Enums\SocialStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EmployeeRequest;
+use App\Models\Appointment;
+use App\Models\Contract;
 use App\Models\Employee;
+use App\Models\Qualification;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
     public function index()
     {
-        $employee = Employee::all();
+        $employee = Employee::latest()->get();
+
         return response()->json([
             'data' => $employee,
             'message' => 'the employees has returned successfully',
@@ -21,77 +27,81 @@ class EmployeeController extends Controller
 
     public function store(EmployeeRequest $request)
     {
-        $personal = $request->personal;
-        $job = $request->job;
-        $financial = $request->financial;
-        $anotherInformation = $request->anotherInformation;
-        $contractType = $job['contractType'];
-        $contract = [];
+        $validated = $request->validated();
 
-        if ($contractType === 'Contract') {
-            $contract[] = [
-                'contractStart' => $job['contract_start'],
-                'contractEnd' => $job['contract_end'],
-                'status' => $job['status'],
-            ];
-        } else if ($contractType === 'Appointment') {
-            $contract[] = [
-                'appointment_type' => $job['appointmentType'],
-                'appointment_date' => $job['appointmentDate'],
-                'appointment_contract_number' => $job['appointmentContractNumber'],
-            ];
-        }
+        $personal = $validated['personal'];
+        //$qualification = $validated['qualification'];
+        $financial = $validated['financial'];
+        $job = $validated['job'];
+        $anotherData = $validated['anotherInformation'];
+//        $attachments = $validated['attachments'];
 
-        $employee = Employee::create([
-            // personal
+
+        $employee = new  Employee($this->getEmployeeData($personal, $job, $anotherData, $financial));
+
+//        $employee->personal_photo
+        $employee->save();
+        return response()->json([
+            'data' => $employee,
+            'message' => 'the employee has been created successfully',
+        ]);
+    }
+
+
+    public function show($id)
+    {
+        $employee = Employee::findOrFail($id);
+        return response()->json([
+            'data' => $employee,
+            'message' => 'the employee has been returned successfully',
+        ]);
+    }
+    protected function getEmployeeData(mixed $personal, mixed $job, mixed $anotherData, mixed $financial)
+    {
+
+        return [
             'name' => $personal['name'],
             'file_number' => $personal['fileNumber'],
-            'financial_number' => $personal['financeNumber'],
+            'finance_number' => $personal['financeNumber'],
             'national_number' => $personal['nationalNumber'],
             'mother_name' => $personal['motherName'],
-//            'social_status' => $personal['socialStatus'],
-            'social_status' => 'single',
-            'family_booklet_number' => $personal['familyNumber'],
-            'family_number_count' => $personal['familyCount'],
+            'social_status' => SocialStatus::getValueFromTranslatedValue($personal['socialStatus']),
+            'family_number' => $personal['familyNumber'],
+            'family_count' => $personal['familyCount'],
             'registration_number' => $personal['registrationNumber'],
-//            'gender' => $personal['gender'],
-            'gender' => 'male',
+            'gender' => GenderEnum::getValueFromTranslatedValue($personal['gender']),
+            'birth_place' => $personal['birthPlace'],
             'birth_date' => $personal['birthDate'],
             'address' => $personal['address'],
             'notes' => $personal['notes'],
-//            'personal_image' => $personal['personalPhoto'],
-            // job
+            'personal_photo' => $personal['personalPhoto'] ?? null,
             'position_id' => $job['currentJob'],
             'department_id' => $job['department'],
-            'hiring_date' => $job['startDate'],
-//            'contract_type' => $job['contractType'],
-            // financial
+            'start_date' => $job['startDate'],
             'bank_id' => $financial['bank'],
             'bank_branch_id' => $financial['bankBranch'],
             'bank_account_number' => $financial['bankAccountNumber'],
-            'hire_financial_grade' => $financial['financialGradeUponAppointment'],
+            'financial_grade_upon_appointment' => $financial['financialGradeUponAppointment'],
             'current_financial_grade' => $financial['currentFinancialGrade'],
-            'current_salary' => $financial['currentPayrollUponFinancialGrade'],
+            'current_payroll_upon_financial_grade' => $financial['currentPayrollUponFinancialGrade'],
             'next_financial_grade' => $financial['nextFinancialGrade'],
-            'financial_grade_due_date' => $financial['financialGradeDate'],
-            'years_in_financial_grade' => $financial['financialGradeStayYears'],
-            'financial_grade_take_date' => $financial['financialGradeDueDate'],
-            'last_bonus_date' => $financial['bonusTakeDate'],
-            'total_bonuses' => $financial['bonusCount'],
+            'financial_grade_date' => $financial['financialGradeDate'],
+            'financial_grade_stay_years' => $financial['financialGradeStayYears'],
+            'financial_grade_due_date' => $financial['financialGradeDueDate'],
+            'bonus_take_date' => $financial['bonusTakeDate'],
+            'bonus_count' => $financial['bonusCount'],
             'base_salary' => $financial['baseSalary'],
-            // additional information
-            'blood_type' => $anotherInformation['bloodType'],
-            'passport_number' => $anotherInformation['passportNumber'],
-            'personal_card_number' => $anotherInformation['personalCardNumber'],
-            'phone_number' => $anotherInformation['phoneNumber'],
-            'vacation_days' => $anotherInformation['vacationBalance'],
-        ]);
-
-        // Additional logic (contract, qualifications, attachments) goes here
-
-        return response()->json([
-            'data' => $employee,
-            'message' => 'The employee has been created successfully',
-        ]);
+            'blood_type' => $anotherData['bloodType'],
+            'nationality' => $anotherData['nationality'],
+            'passport_number' => $anotherData['passportNumber'],
+            'personal_card_number' => $anotherData['personalCardNumber'],
+            'phone_number' => $anotherData['phoneNumber'],
+            'efficiency_report_info' => $anotherData['efficiencyReportInfo'],
+            'vacation_balance' => $anotherData['vacationBalance'],
+//            'cv' => $attachments['cv'],
+//            'contract_attachment' => $attachments['contract'],
+//            'passport_attachment' => $attachments['passport'],
+//            'another_attachment' => $attachments['another'],
+        ];
     }
 }

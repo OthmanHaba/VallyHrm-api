@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -19,5 +20,11 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'admin@admin.com',
         ]);
+
+        $bank = \App\Models\Bank::factory(4)->create();
+        $bankBranch = \App\Models\BankBranch::factory(4)->create();
+        $department = \App\Models\Department::factory(4)->create();
+
+
     }
 }

@@ -16,7 +16,7 @@ trait EnumValues
         $className = Str::snake(class_basename(static::class));
 
         return array_map(function ($value) use ($className) {
-            return __("enums.$className.$value");
+            return __("enums/$className.$value");
         }, self::getValues());
     }
 
@@ -24,6 +24,6 @@ trait EnumValues
     {
         $className = Str::snake(class_basename(static::class));
 
-        return __("enums.$className.$value");
+        return __("enums/$className.$value", [] , 'en');
     }
 }

@@ -12,51 +12,64 @@ return new class extends Migration {
     {
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
-
-            // personal data
+            // Personal information
             $table->string('name');
-            $table->string('phone_number');
-            $table->string('file_number')->unique();
-            $table->string('financial_number')->unique();
-            $table->string('national_number')->unique();
+            $table->string('file_number');
+            $table->string('finance_number');
+            $table->string('national_number');
             $table->string('mother_name');
-            $table->enum('social_status', \App\Enums\SocialStatus::getValues());
-            $table->string('family_booklet_number');
-            $table->integer('family_number_count');
-            $table->string('registration_number')->unique();
-            $table->enum('gender', ['male', 'female']);
+            $table->string('social_status');
+            $table->string('family_number');
+            $table->integer('family_count')->nullable();
+            $table->string('registration_number');
+            $table->string('gender');
+            $table->string('birth_place');
             $table->date('birth_date');
             $table->string('address');
-            $table->string('notes')->nullable();
-            $table->string('personal_image')->nullable();
+            $table->text('notes')->nullable();
+            $table->string('personal_photo')->nullable();
+            // Job information
+//            $table->integer('current_job');
             $table->foreignIdFor(\App\Models\Position::class);
-            $table->date('hiring_date');
-            $table->date('end_date')->nullable();
-            $table->string('end_reason')->nullable();
-            $table->morphs('employment');
-            $table->foreignIdFor(\App\Models\Branch::class);
             $table->foreignIdFor(\App\Models\Department::class);
-
-            // financial data
+            $table->date('start_date');
+//            $table->string('contract_type');
+//            $table->string('contract');
+//            $table->date('contract_start');
+//            $table->date('contract_end');
+//            $table->string('status');
+//            $table->string('appointment_type');
+//            $table->date('appointment_date');
+//            $table->string('appointment_contract_number');
+            // Financial information
             $table->foreignIdFor(\App\Models\Bank::class);
             $table->foreignIdFor(\App\Models\BankBranch::class);
             $table->string('bank_account_number');
-            $table->decimal('hire_financial_grade', 8, 2)->nullable();
-            $table->decimal('current_financial_grade', 8, 2)->nullable();
-            $table->decimal('current_salary', 10, 2)->nullable();
-            $table->decimal('next_financial_grade', 8, 2)->nullable();
-            $table->date('financial_grade_take_date')->nullable();
-            $table->integer('years_in_financial_grade')->nullable();
-            $table->date('financial_grade_due_date')->nullable();
-            $table->date('last_bonus_date')->nullable();
-            $table->integer('total_bonuses')->nullable();
-            $table->decimal('base_salary', 10, 2)->nullable();
-            $table->foreignIdFor(App\Models\Qualification::class);
-            $table->string('blood_type')->nullable();
-            $table->string('passport_number')->unique();
-            $table->string('personal_card_number')->nullable();
-            $table->integer('vacation_days')->nullable();
-            $table->enum('status', ['active', 'inactive']);
+            $table->string('financial_grade_upon_appointment');
+            $table->string('current_financial_grade');
+            $table->string('current_payroll_upon_financial_grade');
+            $table->string('next_financial_grade');
+            $table->date('financial_grade_date');
+            $table->integer('financial_grade_stay_years')->nullable();
+            $table->date('financial_grade_due_date');
+            $table->date('bonus_take_date');
+            $table->integer('bonus_count')->nullable();
+            $table->decimal('base_salary', 15, 2)->nullable();
+            // Another information
+            $table->string('blood_type');
+            $table->string('nationality');
+            $table->string('passport_number');
+            $table->string('personal_card_number');
+//            $table->string('insurance_card_number');
+            $table->string('phone_number');
+            $table->text('efficiency_report_info')->nullable();
+            $table->integer('vacation_balance');
+            // Attachments
+            $table->string('cv')->nullable();
+            $table->string('contract_attachment')->nullable();
+            $table->string('passport_attachment')->nullable();
+            $table->string('another_attachment')->nullable();
+
             $table->timestamps();
         });
     }

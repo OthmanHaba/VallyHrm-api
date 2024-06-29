@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Employee;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,9 @@ class ContractFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'start_date' => $this->faker->date(),
+            'end_date' => $this->faker->date(),
+            'employee_id' => Employee::factory(),
         ];
     }
 }

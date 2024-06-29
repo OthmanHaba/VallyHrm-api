@@ -12,6 +12,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('options/department', [\App\Http\Controllers\Api\OptionController::class, 'departments']);
     Route::get('/options', [\App\Http\Controllers\Api\OptionController::class, 'getOptions']);
+
+    Route::post('attendances/bulk-add', [\App\Http\Controllers\Api\AttendanceController::class, 'bulkAdd']);
+    Route::apiResource('attendances', \App\Http\Controllers\Api\AttendanceController::class)
+        ->only(['index', 'store']);
+
+    Route::post('/payroll', [\App\Http\Controllers\Api\PayrollController::class, 'store']);
 });
 
 Route::post('/login', [App\Http\Controllers\Api\AuthController::class, 'login']);

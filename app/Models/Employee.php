@@ -27,13 +27,8 @@ class Employee extends Model
         return $this->belongsTo(Bank::class);
     }
 
-    public function employment(): \Illuminate\Database\Eloquent\Relations\MorphTo
+    public function attendance(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->morphTo();
-    }
-
-    public function qualification(): BelongsTo
-    {
-        return $this->belongsTo(Qualification::class);
+        return $this->hasMany(Attendance::class);
     }
 }

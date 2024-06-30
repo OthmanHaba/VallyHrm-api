@@ -19,10 +19,9 @@ class PositionFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => $this->faker->jobTitle,
+            'name' => $this->faker->jobTitle,
             'description' => $this->faker->sentence,
             'department_id' => Department::factory()->create()->id,
-            'branch_id' => Branch::factory()->create()->id,
         ];
     }
 }

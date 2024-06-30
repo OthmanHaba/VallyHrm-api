@@ -8,6 +8,17 @@ use Illuminate\Http\Request;
 
 class PayrollController extends Controller
 {
+
+    public function index()
+    {
+        $payrolls = Payroll::with('employee')->get();
+
+        return response()->json([
+            'data' => $payrolls,
+            'message' => 'the payrolls has returned successfully',
+        ]);
+    }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -34,4 +45,5 @@ class PayrollController extends Controller
             'message' => 'the payroll has been created successfully',
         ]);
     }
+
 }

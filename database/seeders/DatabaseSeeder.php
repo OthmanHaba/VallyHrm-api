@@ -25,6 +25,12 @@ class DatabaseSeeder extends Seeder
         $bankBranch = \App\Models\BankBranch::factory(4)->create();
         $department = \App\Models\Department::factory(4)->create();
 
+        \App\Models\Employee::factory(10)->create([
+            'bank_id' => $bank->random()->id,
+            'bank_branch_id' => $bankBranch->random()->id,
+            'department_id' => $department->random()->id,
+        ]);
+
 
     }
 }

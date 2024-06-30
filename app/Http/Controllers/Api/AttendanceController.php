@@ -5,15 +5,24 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Attendance;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AttendanceController extends Controller
 {
     public function index()
     {
-        $attendances = Attendance::with('employee')->get();
-
+        $results = DB::table('attendances')
+            ->join('employees', 'attendances.employee_id', '=', 'employees.id')
+            ->selectRaw('
+             attendances.employee_id,
+              employees.name as employee_name,
+               date,
+               MIN(time) as \'clock-in\',
+               MAX(time) as \'clock-out\'')
+            ->groupBy('date', 'employee_id')
+            ->get();
         return response()->json([
-            'data' => $attendances,
+            'data' => $results,
             'message' => 'the attendances has returned successfully',
         ]);
     }

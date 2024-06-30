@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(\App\Models\Employee::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(\App\Models\Employee::class);
             $table->date('date');
             $table->time('time');
             $table->enum('type', ['in', 'out']);

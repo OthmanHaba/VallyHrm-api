@@ -51,6 +51,8 @@ class EmployeeController extends Controller
     public function show($id)
     {
         $employee = Employee::findOrFail($id);
+        $employee->load(['position','department','bank','bankBranch']);
+
         return response()->json([
             'data' => $employee,
             'message' => 'the employee has been returned successfully',
